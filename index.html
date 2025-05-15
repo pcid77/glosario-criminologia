@@ -29,8 +29,7 @@
   <div id="entries"></div>
 
   <script>
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzc3S0QFnPS5tfYBHjhL-R6D8xL04wc2TFYjISV5lslOPhHiGg5rca2sQVKzsPEXIGn/exec'; // reemplázalo por tu URL real
-
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzc3S0QFnPS5tfYBHjhL-R6D8xL04wc2TFYjISV5lslOPhHiGg5rca2sQVKzsPEXIGn/exec';  
     async function fetchEntries() {
       const res = await fetch(WEB_APP_URL);
       const data = await res.json();
@@ -44,19 +43,21 @@
       });
     }
 
-    async function addTerm() {
-      const term = document.getElementById('term').value;
-      const description = document.getElementById('description').value;
-      const source = document.getElementById('source').value;
-      const verifier = document.getElementById('verifier').value;
+   async function fetchEntries() {
+  const res = await fetch(WEB_APP_URL);
+  const data = await res.json();
+  ...
+}
 
-      const payload = { term, description, source, verifier };
-      await fetch(WEB_APP_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: { 'Content-Type': 'application/json' }
-      });
-      fetchEntries();
+async function addTerm() {
+  const payload = { term, description, source, verifier };
+  await fetch(WEB_APP_URL, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
     }
 
     window.onload = fetchEntries;
