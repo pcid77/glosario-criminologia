@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Glosario Criminología UFV</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f8f9fa; }
+    h1 { color: #000080; text-align: center; }
+    .entry { background: #fff; border: 1px solid #ccc; margin: 10px 0; padding: 10px; border-radius: 5px; }
+    label { display: block; margin-top: 10px; }
+    input, textarea { width: 100%; padding: 8px; }
+    button { margin-top: 10px; padding: 10px; background: #000080; color: #fff; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Glosario de Criminología</h1>
+  <div>
+    <label for="term">Término</label>
+    <input type="text" id="term">
+    <label for="description">Descripción</label>
+    <textarea id="description"></textarea>
+    <label for="source">Fuente bibliográfica</label>
+    <input type="text" id="source">
+    <label for="verifier">Verificado por</label>
+    <input type="text" id="verifier">
+    <button onclick="addTerm()">Añadir término</button>
+  </div>
+  <hr>
+  <div id="entries"></div>
+
+  <script>
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzc3S0QFnPS5tfYBHjhL-R6D8xL04wc2TFYjISV5lslOPhHiGg5rca2sQVKzsPEXIGn/exec'; // reemplázalo por tu URL real
+
+    async function fetchEntries() {
+      const res = await fetch(WEB_APP_URL);
+      const data = await res.json();
+      const container = document.getElementById('entries');
+      container.innerHTML = '';
+      data.forEach(entry => {
+        const div = document.createElement('div');
+        div.className = 'entry';
+        div.innerHTML = `<strong>${entry.term}</strong><br>${entry.description}<br><em>${entry.source}</em><br><small>Verificado por: ${entry.verifier}</small>`;
+        container.appendChild(div);
+      });
+    }
+
+    async function addTerm() {
+      const term = document.getElementById('term').value;
+      const description = document.getElementById('description').value;
+      const source = document.getElementById('source').value;
+      const verifier = document.getElementById('verifier').value;
+
+      const payload = { term, description, source, verifier };
+      await fetch(WEB_APP_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      fetchEntries();
+    }
+
+    window.onload = fetchEntries;
+  </script>
+</body>
+</html>
